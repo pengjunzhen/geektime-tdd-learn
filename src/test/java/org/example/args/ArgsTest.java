@@ -29,6 +29,16 @@ public class ArgsTest {
     // 拆分任务
     // Single Option:
     // TODO: - bool: -l
+    @Test
+    public void should_set_boolean_option_to_true_if_flag_present() {
+        BooleanOption option = Args.parse(BooleanOption.class, "-l");
+        assertTrue(option.logging());
+    }
+
+    record BooleanOption(@Option("l") boolean logging) {
+    }
+
+
     // TODO: - int: -p 8080
     // TODO: - String: -d /usr/logs
     // Multi options:
