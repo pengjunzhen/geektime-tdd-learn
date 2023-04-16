@@ -29,7 +29,7 @@ public class ArgsTest {
 
     // 拆分任务
     // Single Option:
-    // TODO: - bool: -l
+    // - bool: -l
     @Test
     public void should_set_boolean_option_to_true_if_flag_present() {
         BooleanOption option = Args.parse(BooleanOption.class, "-l");
@@ -47,6 +47,16 @@ public class ArgsTest {
 
 
     // TODO: - int: -p 8080
+    @Test
+    public void should_parse_int_as_option_value() {
+        IntOption option = Args.parse(IntOption.class, "-p", "8080");
+        assertEquals(8080, option.port());
+    }
+
+    record IntOption(@Option("p") int port) {
+    }
+
+
     // TODO: - String: -d /usr/logs
     // Multi options:
     // TODO:  -l -p 8080 -d /usr/logs
