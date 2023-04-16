@@ -19,11 +19,14 @@ public class Args {
             if (parameter.getType() == boolean.class) {
                 value = arguments.contains("-" + option.value());
             }
+            if (parameter.getType() == int.class) {
+                int index = arguments.indexOf("-" + option.value());
+                value = Integer.parseInt(arguments.get(index + 1));
+            }
 
             return (T) constructor.newInstance(value);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 }
