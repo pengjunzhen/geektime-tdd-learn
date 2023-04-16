@@ -69,7 +69,7 @@ public class ArgsTest {
     }
 
     // Multi options:
-    // TODO:  -l -p 8080 -d /usr/logs
+    // -l -p 8080 -d /usr/logs
     @Test
     public void should_parse_multi_options() {
         MultiOptions options = Args.parse(MultiOptions.class, "-l", "-p", "8080", "-d", "/usr/logs");
