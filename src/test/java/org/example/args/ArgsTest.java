@@ -1,5 +1,7 @@
 package org.example.args;
 
+import org.junit.jupiter.api.Test;
+
 public class ArgsTest {
 
     // 策略一：用下标去直接定位
@@ -18,5 +20,15 @@ public class ArgsTest {
 
     // 策略三：map
     // {-l:[], -p:[8080], -d:[/usr/logs] }
+
+    @Test
+    public void should() {
+        Options options = Args.parse(Options.class, "-l", "-p", "8080", "-d", "/usr/logs");
+        options.logging();
+        options.port();
+    }
+
+    record Options(@Option("l") boolean logging, @Option("p") int port, @Option("d") String directory) {
+    }
 
 }
