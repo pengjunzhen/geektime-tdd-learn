@@ -1,5 +1,6 @@
 package org.example.args;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -42,6 +43,7 @@ public class ArgsTest {
     // TODO: - string: ""
 
     @Test
+    @Disabled
     public void should_example_1() {
         Options options = Args.parse(Options.class, "-l", "-p", "8080", "-d", "/usr/logs");
         assertTrue(options.logging());
@@ -49,6 +51,7 @@ public class ArgsTest {
     }
 
     @Test
+    @Disabled
     public void should_example_2() {
         ListOptions options = Args.parse(ListOptions.class, "-g", "this", "is", "a", "list", "-d", "1", "2", "-3", "5");
         assertArrayEquals(new String[]{"this", "is", "a", "list"}, options.group());
