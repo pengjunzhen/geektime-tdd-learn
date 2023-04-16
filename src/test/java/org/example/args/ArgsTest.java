@@ -25,6 +25,22 @@ public class ArgsTest {
     // 策略三：map
     // {-l:[], -p:[8080], -d:[/usr/logs] }
 
+    // 拆分任务
+    // Single Option:
+    // TODO: - bool: -l
+    // TODO: - int: -p 8080
+    // TODO: - String: -d /usr/logs
+    // Multi options:
+    // TODO:  -l -p 8080 -d /usr/logs
+    // Sad Path:
+    // TODO: - bool: -l t / -l t f
+    // TODO: - int: -p / -p 8080 9090
+    // TODO: - String: -d / -d /usr/logs /usr/vars
+    // default value：
+    // TODO: - bool: false
+    // TODO: - int: 0
+    // TODO: - string: ""
+
     @Test
     public void should_example_1() {
         Options options = Args.parse(Options.class, "-l", "-p", "8080", "-d", "/usr/logs");
