@@ -27,33 +27,6 @@ public class ArgsTest {
     // 策略三：map
     // {-l:[], -p:[8080], -d:[/usr/logs] }
 
-    // 拆分任务
-    // Single Option:
-    // - bool: -l
-
-
-    // - int: -p 8080
-    @Test
-    public void should_parse_int_as_option_value() {
-        IntOption option = Args.parse(IntOption.class, "-p", "8080");
-        assertEquals(8080, option.port());
-    }
-
-    record IntOption(@Option("p") int port) {
-    }
-
-
-    // - String: -d /usr/logs
-    @Test
-    public void should_get_string_as_option_value() {
-        StringOption option = Args.parse(StringOption.class, "-d", "/usr/logs");
-        assertEquals("/usr/logs", option.directory());
-    }
-
-    record StringOption(@Option("d") String directory) {
-
-    }
-
     // Multi options:
     // -l -p 8080 -d /usr/logs
     @Test
@@ -66,20 +39,6 @@ public class ArgsTest {
 
     record MultiOptions(@Option("l") boolean logging, @Option("p") int port, @Option("d") String directory) {
     }
-
-    // BooleanOptionParserTest:
-    // Sad Path:
-    // TODO: - bool: -l t / -l t f
-    // default value：
-    // TODO: - bool: false
-
-    // SingleValuedOptionParserTest:
-    // Sad Path:
-    // TODO: - int: -p / -p 8080 9090
-    // TODO: - String: -d / -d /usr/logs /usr/vars
-    // default value：
-    // TODO: - int: 0
-    // TODO: - string: ""
 
     @Test
     @Disabled
