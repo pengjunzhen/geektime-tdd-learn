@@ -1,6 +1,7 @@
 package org.example.args;
 
 import java.util.List;
+import java.util.function.Function;
 
 class IntOptionParser implements OptionParser {
 
@@ -12,6 +13,7 @@ class IntOptionParser implements OptionParser {
     }
 
     protected Object parseValue(String value) {
-        return Integer.valueOf(value);
+        Function<String, Integer> valueParser = Integer::valueOf;
+        return valueParser.apply(value);
     }
 }
