@@ -2,6 +2,6 @@ package org.example.args;
 
 import java.util.List;
 
-interface OptionParser {
-    Object parse(List<String> arguments, Option option);
+interface OptionParser<T> {
+    T parse(List<String> arguments, Option option);
 }
