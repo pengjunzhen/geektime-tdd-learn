@@ -7,6 +7,13 @@ class IntOptionParser implements OptionParser {
 
     private Function<String, Object> valueParser = Integer::valueOf;
 
+    public IntOptionParser() {
+    }
+
+    public IntOptionParser(Function<String, Object> valueParser) {
+        this.valueParser = valueParser;
+    }
+
     @Override
     public Object parse(List<String> arguments, Option option) {
         int index = arguments.indexOf("-" + option.value());
