@@ -50,7 +50,7 @@ public class Args {
     }
 
     private static Object parseBoolean(List<String> arguments, Option option) {
-        return arguments.contains("-" + option.value());
+        return new BooleanOptionParser().parse(arguments, option);
     }
 
     static class BooleanOptionParser implements OptionParser {
