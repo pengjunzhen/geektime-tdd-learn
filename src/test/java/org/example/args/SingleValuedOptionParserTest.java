@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Arrays;
+
 import static java.util.Arrays.asList;
 import static org.example.args.BooleanOptionParserTest.option;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,6 +22,7 @@ public class SingleValuedOptionParserTest {
         assertEquals("p", e.getOption());
     }
 
+    // sad path
     @ParameterizedTest
     @ValueSource(strings = {"-p -l", "-p"})
     public void should_not_accept_insufficient_argument_for_single_value_option(String arguments) {
@@ -30,6 +33,7 @@ public class SingleValuedOptionParserTest {
         assertEquals("p", e.getOption());
     }
 
+    // default path
     @Test
     public void should_set_default_value_to_0_for_int_option() {
 
@@ -43,5 +47,11 @@ public class SingleValuedOptionParserTest {
         });
 
         assertEquals("d", e.getOption());
+    }
+
+    // happy path
+    @Test
+    public void should_parse_value_if_flag_present() {
+        assertEquals(8080, new SingleValueOptionParser<>(0, Integer::parseInt).parse(asList("-p", "8080"), option("p")));
     }
 }
