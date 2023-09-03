@@ -5,7 +5,7 @@ import java.util.function.Function;
 
 class IntOptionParser implements OptionParser {
 
-    private Function<String, Integer> valueParser = Integer::valueOf;
+    private Function<String, Object> valueParser = Integer::valueOf;
 
     @Override
     public Object parse(List<String> arguments, Option option) {
