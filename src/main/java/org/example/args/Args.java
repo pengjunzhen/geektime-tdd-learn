@@ -36,6 +36,10 @@ public class Args {
         return value;
     }
 
+    interface OptionParser {
+        Object parse(List<String> arguments, Option option);
+    }
+
     private static Object parseString(List<String> arguments, Option option) {
         int index = arguments.indexOf("-" + option.value());
         return arguments.get(index + 1);
