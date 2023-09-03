@@ -30,20 +30,6 @@ public class ArgsTest {
     // 拆分任务
     // Single Option:
     // - bool: -l
-    @Test
-    public void should_set_boolean_option_to_true_if_flag_present() {
-        BooleanOption option = Args.parse(BooleanOption.class, "-l");
-        assertTrue(option.logging());
-    }
-
-    @Test
-    public void should_set_boolean_option_to_false_if_flag_not_present() {
-        BooleanOption option = Args.parse(BooleanOption.class);
-        assertFalse(option.logging());
-    }
-
-    record BooleanOption(@Option("l") boolean logging) {
-    }
 
 
     // - int: -p 8080

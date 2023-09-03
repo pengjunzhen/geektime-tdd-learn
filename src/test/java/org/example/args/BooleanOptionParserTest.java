@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BooleanOptionParserTest {
 
+    // sad path
     @Test
     public void should_not_accept_extra_argument_for_boolean_option() {
         TooManyArgumentsException e = assertThrows(TooManyArgumentsException.class,
@@ -21,11 +22,13 @@ public class BooleanOptionParserTest {
         assertEquals("l", e.getOption());
     }
 
+    // default path
     @Test
     public void should_set_default_value_to_false_if_option_not_present() {
         assertFalse(new BooleanOptionParser<>().parse(asList(), option("l")));
     }
 
+    // happy path
     @Test
     public void should_set_default_value_to_true_if_option_present() {
         assertTrue(new BooleanOptionParser<>().parse(asList("-l"), option("l")));
