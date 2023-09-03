@@ -5,17 +5,14 @@ import java.util.function.Function;
 
 class IntOptionParser implements OptionParser {
 
-    private Function<String, Object> valueParser = Integer::valueOf;
-
-    private IntOptionParser() {
-    }
+    private Function<String, Object> valueParser;
 
     public IntOptionParser(Function<String, Object> valueParser) {
         this.valueParser = valueParser;
     }
 
     public static OptionParser createIntOptionParser() {
-        return new IntOptionParser();
+        return new IntOptionParser(Integer::valueOf);
     }
 
     @Override
