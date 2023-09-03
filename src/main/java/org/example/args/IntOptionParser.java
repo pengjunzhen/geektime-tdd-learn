@@ -5,6 +5,8 @@ import java.util.function.Function;
 
 class IntOptionParser implements OptionParser {
 
+    private Function<String, Integer> valueParser = Integer::valueOf;
+
     @Override
     public Object parse(List<String> arguments, Option option) {
         int index = arguments.indexOf("-" + option.value());
@@ -13,7 +15,6 @@ class IntOptionParser implements OptionParser {
     }
 
     protected Object parseValue(String value) {
-        Function<String, Integer> valueParser = Integer::valueOf;
         return valueParser.apply(value);
     }
 }
