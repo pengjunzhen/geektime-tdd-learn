@@ -8,6 +8,10 @@ class IntOptionParser implements OptionParser {
     public Object parse(List<String> arguments, Option option) {
         int index = arguments.indexOf("-" + option.value());
         String value = arguments.get(index + 1);
-        return Integer.parseInt(value);
+        return parseValue(value);
+    }
+
+    private static Object parseValue(String value) {
+        return Integer.valueOf(value);
     }
 }
