@@ -81,12 +81,17 @@ public class ArgsTest {
     record MultiOptions(@Option("l") boolean logging, @Option("p") int port, @Option("d") String directory) {
     }
 
+    // BooleanOptionParserTest:
     // Sad Path:
     // TODO: - bool: -l t / -l t f
+    // default value：
+    // TODO: - bool: false
+
+    // SingleValuedOptionParserTest:
+    // Sad Path:
     // TODO: - int: -p / -p 8080 9090
     // TODO: - String: -d / -d /usr/logs /usr/vars
     // default value：
-    // TODO: - bool: false
     // TODO: - int: 0
     // TODO: - string: ""
 
