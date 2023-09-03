@@ -23,7 +23,7 @@ public class Args {
 
     private static Object parseOption(List<String> arguments, Parameter parameter) {
 
-        return getOptionParser(parameter.getType()).parse(arguments, parameter.getAnnotation(Option.class));
+        return PARSERS.get(parameter.getType()).parse(arguments, parameter.getAnnotation(Option.class));
     }
 
     private static final Map<Class<?>, OptionParser> PARSERS = Map.of(
@@ -31,10 +31,6 @@ public class Args {
             int.class, new IntOptionParser(),
             String.class, new StringOptionParser()
     );
-
-    private static OptionParser getOptionParser(Class<?> type) {
-        return PARSERS.get(type);
-    }
 
     interface OptionParser {
         Object parse(List<String> arguments, Option option);
