@@ -24,15 +24,15 @@ public class Args {
         Object value = null;
         Option option = parameter.getAnnotation(Option.class);
         if (parameter.getType() == boolean.class) {
-            BooleanOptionParser parser = new BooleanOptionParser();
+            OptionParser parser = new BooleanOptionParser();
             value = parser.parse(arguments, option);
         }
         if (parameter.getType() == int.class) {
-            IntOptionParser parser = new IntOptionParser();
+            OptionParser parser = new IntOptionParser();
             value = parser.parse(arguments, option);
         }
         if (parameter.getType() == String.class) {
-            StringOptionParser parser = new StringOptionParser();
+            OptionParser parser = new StringOptionParser();
             value = parser.parse(arguments, option);
         }
         return value;
