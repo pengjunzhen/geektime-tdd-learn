@@ -1,7 +1,6 @@
 package org.example.args;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.List;
@@ -58,7 +57,7 @@ public class Args {
 
         @Override
         public Object parse(List<String> arguments, Option option) {
-            return parseBoolean(arguments, option);
+            return arguments.contains("-" + option.value());
         }
     }
 }
