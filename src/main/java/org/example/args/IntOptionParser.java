@@ -7,11 +7,15 @@ class IntOptionParser implements OptionParser {
 
     private Function<String, Object> valueParser = Integer::valueOf;
 
-    public IntOptionParser() {
+    private IntOptionParser() {
     }
 
     public IntOptionParser(Function<String, Object> valueParser) {
         this.valueParser = valueParser;
+    }
+
+    public static IntOptionParser createIntOptionParser() {
+        return new IntOptionParser();
     }
 
     @Override
