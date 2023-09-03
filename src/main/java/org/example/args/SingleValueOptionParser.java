@@ -8,10 +8,6 @@ class SingleValueOptionParser<T> implements OptionParser<T> {
     private T defaultValue;
     private Function<String, T> valueParser;
 
-    public SingleValueOptionParser(Function<String, T> valueParser) {
-        this.valueParser = valueParser;
-    }
-
     public SingleValueOptionParser(T defaultValue, Function<String, T> valueParser) {
         this.defaultValue = defaultValue;
         this.valueParser = valueParser;
