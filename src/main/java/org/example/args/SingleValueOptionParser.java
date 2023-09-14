@@ -21,12 +21,7 @@ class SingleValueOptionParser<T> implements OptionParser<T> {
             return defaultValue;
         }
 
-        int followingFlag = IntStream.range(index + 1, arguments.size())
-                .filter(it -> arguments.get(it).startsWith("-"))
-                .findFirst()
-                .orElse(arguments.size());
-
-        List<String> values = arguments.subList(index + 1, followingFlag);
+        List<String> values = values(arguments, index);
 
         if (values.size() < 1) {
             throw new InsufficientArgumentsException(option.value());
@@ -36,6 +31,15 @@ class SingleValueOptionParser<T> implements OptionParser<T> {
             throw new TooManyArgumentsException(option.value());
         }
         return valueParser.apply(arguments.get(index + 1));
+    }
+
+    private static List<String> values(List<String> arguments, int index) {
+        int followingFlag = IntStream.range(index + 1, arguments.size())
+                .filter(it -> arguments.get(it).startsWith("-"))
+                .findFirst()
+                .orElse(arguments.size());
+
+        return arguments.subList(index + 1, followingFlag);
     }
 
 }
