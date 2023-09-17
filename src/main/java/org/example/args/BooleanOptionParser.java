@@ -13,6 +13,9 @@ class BooleanOptionParser<T> implements OptionParser<Boolean> {
 
         List<String> values = SingleValueOptionParser.values(arguments, index);
 
+        if (values.size() < 0) {
+            throw new InsufficientArgumentsException(option.value());
+        }
         if (values.size() > 0) {
             throw new TooManyArgumentsException(option.value());
         }
