@@ -34,7 +34,7 @@ class SingleValueOptionParser<T> implements OptionParser<T> {
         return valueParser.apply(value);
     }
 
-    private static List<String> values(List<String> arguments, int index) {
+    static List<String> values(List<String> arguments, int index) {
         int followingFlag = IntStream.range(index + 1, arguments.size())
                 .filter(it -> arguments.get(it).startsWith("-"))
                 .findFirst()
