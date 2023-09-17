@@ -1,5 +1,8 @@
 package org.example.args;
 
+import org.example.args.exceptions.InsufficientArgumentsException;
+import org.example.args.exceptions.TooManyArgumentsException;
+
 import java.util.List;
 
 class BooleanOptionParser<T> implements OptionParser<Boolean> {

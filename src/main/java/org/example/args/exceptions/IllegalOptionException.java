@@ -1,4 +1,4 @@
-package org.example.args;
+package org.example.args.exceptions;
 
 public class IllegalOptionException extends RuntimeException {
 
