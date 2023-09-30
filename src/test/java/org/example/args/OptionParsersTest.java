@@ -119,8 +119,12 @@ public class OptionParsersTest {
         // -g "this" "is" {"this", is"}
         @Test
         public void should_parse_list_value() {
-            String[] value = OptionParsers.list(String[]::new, String::valueOf).parse(asList("-g", "this", "is"), option("g"));
-            assertArrayEquals(new String[]{"this", "is"}, value);
+            assertArrayEquals(new String[]{"this", "is"}, OptionParsers.list(String[]::new, String::valueOf).parse(asList("-g", "this", "is"), option("g")));
+        }
+
+        @Test
+        public void should_not_treat_negative_int_as_flag() {
+            assertArrayEquals(new Integer[]{-1, -2}, OptionParsers.list(Integer[]::new, Integer::valueOf).parse(asList("-g", "-1", "-2"), option("g")));
         }
 
         // default value []
