@@ -45,8 +45,10 @@ class OptionParsers {
         }
         List<String> values = values(arguments, index);
 
-        checkSize(option, expectedSize, values);
-        return Optional.of(values);
+        return Optional.of(values).map(it -> {
+            checkSize(option, expectedSize, it);
+            return it;
+        });
     }
 
     private static void checkSize(Option option, int expectedSize, List<String> values) {
