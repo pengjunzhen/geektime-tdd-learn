@@ -17,7 +17,7 @@ public class BooleanOptionParserTest {
     @Test
     public void should_not_accept_extra_argument_for_boolean_option() {
         TooManyArgumentsException e = assertThrows(TooManyArgumentsException.class,
-                () -> BooleanOptionParser.bool()
+                () -> SingleValueOptionParser.bool()
                         .parse(asList("-l", "t"), option("l")));
         assertEquals("l", e.getOption());
     }
@@ -25,13 +25,13 @@ public class BooleanOptionParserTest {
     // default path
     @Test
     public void should_set_default_value_to_false_if_option_not_present() {
-        assertFalse(BooleanOptionParser.bool().parse(asList(), option("l")));
+        assertFalse(SingleValueOptionParser.bool().parse(asList(), option("l")));
     }
 
     // happy path
     @Test
     public void should_set_default_value_to_true_if_option_present() {
-        assertTrue(BooleanOptionParser.bool().parse(asList("-l"), option("l")));
+        assertTrue(SingleValueOptionParser.bool().parse(asList("-l"), option("l")));
     }
 
     static Option option(String value) {
