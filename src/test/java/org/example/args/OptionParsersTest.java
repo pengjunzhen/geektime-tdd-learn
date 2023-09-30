@@ -12,6 +12,7 @@ import java.util.function.Function;
 
 import static java.util.Arrays.asList;
 import static org.example.args.OptionParsersTest.BooleanOptionParser.option;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -110,5 +111,18 @@ public class OptionParsersTest {
                 }
             };
         }
+    }
+
+    @Nested
+    class ListOptionParser {
+        // TODO: -g "this" "is" {"this", is"}
+        @Test
+        public void should_parse_list_value() {
+            String[] value = OptionParsers.list(String::valueOf).parse(asList("-g", "this", "is"), option("-g"));
+            assertArrayEquals(new String[]{"-g", "this", "is"}, value);
+        }
+
+        // TODO: default value []
+        // TODO: -d a throw exception
     }
 }
