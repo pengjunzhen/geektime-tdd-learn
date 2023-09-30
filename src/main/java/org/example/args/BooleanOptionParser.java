@@ -7,7 +7,7 @@ class BooleanOptionParser<T> implements OptionParser<Boolean> {
     private BooleanOptionParser() {
     }
 
-    public static <T> OptionParser<Boolean> createBooleanOptionParser() {
+    public static <T> OptionParser<Boolean> bool() {
         return (arguments, option) -> SingleValueOptionParser
                 .values(arguments, option, 0)
                 .map(it -> true)
