@@ -39,13 +39,10 @@ class OptionParsers {
     }
 
     private static Optional<List<String>> values(List<String> arguments, Option option, int expectedSize) {
-        return values(arguments, option).map(it -> {
-            checkSize(option, expectedSize, it);
-            return it;
-        });
+        return values(arguments, option).map(it -> checkSize(option, expectedSize, it));
     }
 
-    private static void checkSize(Option option, int expectedSize, List<String> values) {
+    private static List<String> checkSize(Option option, int expectedSize, List<String> values) {
         if (values.size() < expectedSize) {
             throw new InsufficientArgumentsException(option.value());
         }
@@ -53,6 +50,7 @@ class OptionParsers {
         if (values.size() > expectedSize) {
             throw new TooManyArgumentsException(option.value());
         }
+        return values;
     }
 
     private static <T> T parseValue(Option option, String value, Function<String, T> valueParser1) {
