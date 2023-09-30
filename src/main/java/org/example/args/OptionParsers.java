@@ -63,7 +63,7 @@ class OptionParsers {
         }
     }
 
-        private static List<String> values(List<String> arguments, int index) {
+    private static List<String> values(List<String> arguments, int index) {
         int followingFlag = IntStream.range(index + 1, arguments.size())
                 .filter(it -> arguments.get(it).startsWith("-"))
                 .findFirst()
