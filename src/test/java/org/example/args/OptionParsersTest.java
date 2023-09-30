@@ -118,8 +118,8 @@ public class OptionParsersTest {
         // TODO: -g "this" "is" {"this", is"}
         @Test
         public void should_parse_list_value() {
-            String[] value = OptionParsers.list(String::valueOf).parse(asList("-g", "this", "is"), option("-g"));
-            assertArrayEquals(new String[]{"-g", "this", "is"}, value);
+            String[] value = OptionParsers.list(String[]::new, String::valueOf).parse(asList("-g", "this", "is"), option("g"));
+            assertArrayEquals(new String[]{"this", "is"}, value);
         }
 
         // TODO: default value []
