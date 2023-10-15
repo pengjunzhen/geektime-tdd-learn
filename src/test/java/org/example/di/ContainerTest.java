@@ -1,6 +1,5 @@
 package org.example.di;
 
-import jakarta.inject.Inject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -9,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ContainerTest {
@@ -60,7 +60,7 @@ public class ContainerTest {
                 assertSame(dependency, ((ComponentWithInjectConstructor) instance).getDependency());
             }
 
-            // TODO: A -> B -> C
+            // A -> B -> C
             @Test
             public void should_bind_type_to_a_class_with_transitive_dependencies() {
                 context.bind(Component.class, ComponentWithInjectConstructor.class);
@@ -75,6 +75,20 @@ public class ContainerTest {
 
                 assertEquals("indirect dependency", ((DependencyWithInjectConstructor) dependency).getDependency());
             }
+
+            // multi inject constructors
+            @Test
+            public void should_throw_exception_if_multi_inject_constructor_provider() {
+                assertThrows(IllegalComponentException.class, () -> context.bind(Component.class, ComponentWithMultiInjectConstructors.class));
+            }
+
+            @Test
+            public void should_throw_exception_if_no_inject_constructor_nor_default_constructor_provider() {
+                assertThrows(IllegalComponentException.class, () -> context.bind(Component.class, ComponentWithNoInjectConstructorsNorDefaultConstructor.class));
+            }
+
+            // TODO: no default constructor and inject constructor
+            // TODO: dependencies not exist
         }
 
         @Nested
@@ -99,39 +113,3 @@ public class ContainerTest {
     }
 }
 
-interface Component {
-}
-
-class ComponentWithDefaultConstructor implements Component {
-    public ComponentWithDefaultConstructor() {
-    }
-}
-
-interface Dependency {
-}
-
-class ComponentWithInjectConstructor implements Component {
-    private Dependency dependency;
-
-    @Inject
-    public ComponentWithInjectConstructor(Dependency dependency) {
-        this.dependency = dependency;
-    }
-
-    public Dependency getDependency() {
-        return dependency;
-    }
-}
-
-class DependencyWithInjectConstructor implements Dependency {
-    private String dependency;
-
-    @Inject
-    public DependencyWithInjectConstructor(String dependency) {
-        this.dependency = dependency;
-    }
-
-    public String getDependency() {
-        return dependency;
-    }
-}
