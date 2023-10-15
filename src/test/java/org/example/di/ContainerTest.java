@@ -87,7 +87,6 @@ public class ContainerTest {
                 assertThrows(IllegalComponentException.class, () -> context.bind(Component.class, ComponentWithNoInjectConstructorsNorDefaultConstructor.class));
             }
 
-            // TODO: no default constructor and inject constructor
             // TODO: dependencies not exist
         }
 
