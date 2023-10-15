@@ -24,16 +24,7 @@ public class Context {
     void bind(Class<Type> type, Class<Implementation> implementation) {
 
         Constructor<Implementation> injectConstructor = getInjectConstructor(implementation);
-        providers.put(type, (Provider<Type>) () -> {
-            try {
-                Object[] dependencies = stream(injectConstructor.getParameters())
-                        .map(p -> get(p.getType()).orElseThrow(DependencyNotFoundException::new))
-                        .toArray(Object[]::new);
-                return injectConstructor.newInstance(dependencies);
-            } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
-                throw new RuntimeException(e);
-            }
-        });
+        providers.put(type, new ConstructInjectionProvider<>(injectConstructor));
     }
 
     private <Type> Constructor<Type> getInjectConstructor(Class<Type> implementation) {
@@ -55,4 +46,33 @@ public class Context {
 
         return Optional.ofNullable(providers.get(type)).map(provider -> (Type) provider.get());
     }
+
+    class ConstructInjectionProvider<T> implements Provider<T> {
+        private Constructor<T> injectConstructor;
+        private boolean constructing =  false;
+
+        public ConstructInjectionProvider(Constructor<T> injectConstructor) {
+            this.injectConstructor = injectConstructor;
+        }
+
+        @Override
+        public T get() {
+            if (constructing) {
+                throw new CyclicDependenciesFoundException();
+            }
+            try {
+                constructing = true;
+                Object[] dependencies = stream(injectConstructor.getParameters())
+                        .map(p -> Context.this.get(p.getType()).orElseThrow(DependencyNotFoundException::new))
+                        .toArray(Object[]::new);
+                return injectConstructor.newInstance(dependencies);
+            } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
+                throw new RuntimeException(e);
+            } finally {
+                constructing = false;
+            }
+        }
+    }
 }
+
+

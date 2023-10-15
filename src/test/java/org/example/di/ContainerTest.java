@@ -1,5 +1,6 @@
 package org.example.di;
 
+import jakarta.inject.Inject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -102,6 +103,23 @@ public class ContainerTest {
 
                 assertThrows(DependencyNotFoundException.class, () -> context.get(Component.class).get());
             }
+
+            @Test
+            public void should_throw_exception_if_cyclic_dependencies_found() {
+                context.bind(Component.class, ComponentWithInjectConstructor.class);
+                context.bind(Dependency.class, DependencyDependOnComponent.class);
+
+                assertThrows(CyclicDependenciesFoundException.class, () -> context.get(Component.class));
+            }
+
+            @Test
+            public void should_throw_exception_if_transitive_cyclic_dependencies_found() {
+                context.bind(Component.class, ComponentWithInjectConstructor.class);
+                context.bind(Dependency.class, DependencyDependedOnAnotherDependency.class);
+                context.bind(AnotherDependency.class, AnotherDependencyDependedOnComponent.class);
+
+                assertThrows(CyclicDependenciesFoundException.class, () -> context.get(Component.class));
+            }
         }
 
         @Nested
@@ -126,3 +144,35 @@ public class ContainerTest {
     }
 }
 
+class DependencyDependOnComponent implements Dependency {
+    private Component component;
+
+    @Inject
+    public DependencyDependOnComponent(Component component) {
+        this.component = component;
+    }
+
+    public Component getComponent() {
+        return component;
+    }
+}
+
+interface AnotherDependency {}
+
+class AnotherDependencyDependedOnComponent implements AnotherDependency {
+    private Component component;
+
+    @Inject
+    public AnotherDependencyDependedOnComponent(Component component) {
+        this.component = component;
+    }
+}
+
+class DependencyDependedOnAnotherDependency implements Dependency {
+    private AnotherDependency anotherDependency;
+
+    @Inject
+    public DependencyDependedOnAnotherDependency(AnotherDependency anotherDependency) {
+        this.anotherDependency = anotherDependency;
+    }
+}
