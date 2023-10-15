@@ -60,7 +60,7 @@ public class Context {
         @Override
         public T get() {
             if (constructing) {
-                throw new CyclicDependenciesFoundException();
+                throw new CyclicDependenciesFoundException(componentType);
             }
             try {
                 constructing = true;
@@ -69,6 +69,8 @@ public class Context {
                                 new DependencyNotFoundException(componentType, p.getType())))
                         .toArray(Object[]::new);
                 return injectConstructor.newInstance(dependencies);
+            } catch (CyclicDependenciesFoundException e) {
+                throw new CyclicDependenciesFoundException(componentType, e);
             } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
                 throw new RuntimeException(e);
             } finally {
