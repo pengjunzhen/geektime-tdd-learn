@@ -33,7 +33,7 @@ public class ContainerTest {
             };
             context.bind(Component.class, instance);
 
-            assertSame(instance, context.get(Component.class).orElseThrow(DependencyNotFoundException::new));
+            assertSame(instance, context.get(Component.class).get());
         }
 
         // TODO: abstract class
@@ -101,7 +101,21 @@ public class ContainerTest {
             public void should_throw_exception_if_dependency_not_found() {
                 context.bind(Component.class, ComponentWithInjectConstructor.class);
 
-                assertThrows(DependencyNotFoundException.class, () -> context.get(Component.class).get());
+                DependencyNotFoundException exception = assertThrows(DependencyNotFoundException.class, () -> context.get(Component.class).get());
+
+                assertEquals(Dependency.class, exception.getDependency());
+                assertEquals(Component.class, exception.getComponent());
+            }
+
+            @Test
+            public void should_throw_exception_if_transitive_dependency_not_found() {
+                context.bind(Component.class, ComponentWithInjectConstructor.class);
+                context.bind(Dependency.class, DependencyWithInjectConstructor.class);
+
+                DependencyNotFoundException exception = assertThrows(DependencyNotFoundException.class, () -> context.get(Component.class).get());
+
+                assertEquals(String.class, exception.getDependency());
+                assertEquals(Dependency.class, exception.getComponent());
             }
 
             @Test
