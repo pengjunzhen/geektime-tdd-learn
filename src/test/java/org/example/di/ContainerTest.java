@@ -2,17 +2,21 @@ package org.example.di;
 
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.util.Optional;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.eq;
 
 public class ContainerTest {
 
@@ -152,7 +156,49 @@ public class ContainerTest {
 
         @Nested
         public class FieldInjection {
+            static class ComponentWithFieldInjection {
+                @Inject
+                Dependency dependency;
+            }
 
+            static class SubClassWithFieldInjection extends ComponentWithFieldInjection {
+
+            }
+
+            // TODO throw exception if field is final
+
+            @Test
+            public void should_inject_dependency_via_field() {
+                Dependency dependency = new Dependency() {
+                };
+
+                config.bind(Dependency.class, dependency);
+                config.bind(ComponentWithFieldInjection.class, ComponentWithFieldInjection.class);
+
+                ComponentWithFieldInjection component = config.getContext().get(ComponentWithFieldInjection.class).get();
+
+                assertSame(dependency, component.dependency);
+            }
+
+            @Test
+            public void should_inject_dependency_via_superclass_inject_field() {
+                Dependency dependency = new Dependency() {
+                };
+
+                config.bind(Dependency.class, dependency);
+                config.bind(SubClassWithFieldInjection.class, SubClassWithFieldInjection.class);
+
+                SubClassWithFieldInjection component = config.getContext().get(SubClassWithFieldInjection.class).get();
+
+                assertSame(dependency, component.dependency);
+            }
+
+            @Test
+            @Disabled
+            public void should_include_field_dependency_in_dependencies() {
+                ConstructInjectionProvider<ComponentWithFieldInjection> provider = new ConstructInjectionProvider<>(ComponentWithFieldInjection.class);
+                assertArrayEquals(new Class<?>[]{Dependency.class}, provider.getDependencies().toArray(Class<?>[]::new));
+            }
         }
 
         @Nested
