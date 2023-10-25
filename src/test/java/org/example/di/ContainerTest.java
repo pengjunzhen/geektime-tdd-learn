@@ -172,6 +172,59 @@ public class ContainerTest {
     }
 }
 
+
+interface Component {
+}
+
+class ComponentWithDefaultConstructor implements Component {
+    public ComponentWithDefaultConstructor() {
+    }
+}
+
+class ComponentWithInjectConstructor implements Component {
+    private Dependency dependency;
+
+    @Inject
+    public ComponentWithInjectConstructor(Dependency dependency) {
+        this.dependency = dependency;
+    }
+
+    public Dependency getDependency() {
+        return dependency;
+    }
+}
+
+class ComponentWithMultiInjectConstructors implements Component {
+    @Inject
+    public ComponentWithMultiInjectConstructors(String name, Double value) {
+    }
+
+    @Inject
+    public ComponentWithMultiInjectConstructors(String name) {
+    }
+}
+
+class ComponentWithNoInjectConstructorsNorDefaultConstructor implements Component {
+    public ComponentWithNoInjectConstructorsNorDefaultConstructor(String name) {
+    }
+}
+
+interface Dependency {
+}
+
+class DependencyWithInjectConstructor implements Dependency {
+    private String dependency;
+
+    @Inject
+    public DependencyWithInjectConstructor(String dependency) {
+        this.dependency = dependency;
+    }
+
+    public String getDependency() {
+        return dependency;
+    }
+}
+
 class DependencyDependOnComponent implements Dependency {
     private Component component;
 
