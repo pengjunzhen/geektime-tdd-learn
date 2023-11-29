@@ -203,7 +203,27 @@ public class ContainerTest {
 
         @Nested
         public class MethodInjection {
+            static class InjectMethodWithNoDependency {
+                boolean called = false;
 
+                @Inject
+                public void install() {
+                    this.called = true;
+                }
+            }
+
+            @Test
+            public void should_call_inject_method_even_if_no_dependency_declared() {
+                config.bind(InjectMethodWithNoDependency.class, InjectMethodWithNoDependency.class);
+
+                InjectMethodWithNoDependency component = config.getContext().get(InjectMethodWithNoDependency.class).get();
+                assertTrue(component.called);
+            }
+
+            // TODO inject method with dependencies will be injected
+            // TODO override inject method from superclass
+            // TODO include dependencies from inject methods
+            // TODO throw exception if type parameter defined
         }
     }
 

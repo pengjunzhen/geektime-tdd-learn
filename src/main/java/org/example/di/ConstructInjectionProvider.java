@@ -5,6 +5,7 @@ import jakarta.inject.Inject;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +17,14 @@ import static java.util.Arrays.stream;
 class ConstructInjectionProvider<T> implements ContextConfig.ComponentProvider<T> {
     private Constructor<T> injectConstructor;
     public List<Field> injectFields;
+    public List<Method> injectMethods;
 
     public ConstructInjectionProvider(Class<T> component) {
         this.injectConstructor = getInjectConstructor(component);
         this.injectFields = getInjectFields(component);
+        this.injectMethods = stream(component.getDeclaredMethods())
+                .filter(m -> m.isAnnotationPresent(Inject.class))
+                .toList();
     }
 
     @Override
@@ -31,6 +36,12 @@ class ConstructInjectionProvider<T> implements ContextConfig.ComponentProvider<T
             T instance = injectConstructor.newInstance(dependencies);
             for (Field field : injectFields) {
                 field.set(instance, context.get(field.getType()).get());
+            }
+            for (Method method : injectMethods) {
+                method.invoke(instance,
+                        stream(method.getParameterTypes())
+                                .map(t -> context.get(t).get())
+                                .toArray(Object[]::new));
             }
             return instance;
         } catch (InvocationTargetException | InstantiationException | IllegalAccessException e) {
