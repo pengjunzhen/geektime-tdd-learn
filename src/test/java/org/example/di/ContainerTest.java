@@ -221,6 +221,26 @@ public class ContainerTest {
             }
 
             // TODO inject method with dependencies will be injected
+            static class InjectMethodWithDependency {
+                Dependency dependency;
+
+                @Inject
+                void install(Dependency dependency) {
+                    this.dependency = dependency;
+                }
+            }
+
+            @Test
+            public void should_inject_dependency_via_inject_method() {
+                Dependency dependency = new Dependency() {
+                };
+                config.bind(Dependency.class, dependency);
+                config.bind(InjectMethodWithDependency.class, InjectMethodWithDependency.class);
+
+                InjectMethodWithDependency component = config.getContext().get(InjectMethodWithDependency.class).get();
+                assertEquals(dependency, component.dependency);
+            }
+
             // TODO override inject method from superclass
             // TODO include dependencies from inject methods
             // TODO throw exception if type parameter defined
