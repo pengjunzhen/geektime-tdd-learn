@@ -220,7 +220,6 @@ public class ContainerTest {
                 assertTrue(component.called);
             }
 
-            // TODO inject method with dependencies will be injected
             static class InjectMethodWithDependency {
                 Dependency dependency;
 
@@ -243,6 +242,12 @@ public class ContainerTest {
 
             // TODO override inject method from superclass
             // TODO include dependencies from inject methods
+            @Test
+            public void should_include_dependencies_from_inject_method() {
+                ConstructInjectionProvider<InjectMethodWithDependency> provider = new ConstructInjectionProvider<>(InjectMethodWithDependency.class);
+                assertArrayEquals(new Class<?>[]{Dependency.class}, provider.getDependencies().toArray(Class<?>[]::new));
+            }
+
             // TODO throw exception if type parameter defined
         }
     }
