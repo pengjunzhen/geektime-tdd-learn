@@ -40,9 +40,6 @@ public class ContainerTest {
             assertSame(instance, context.get(Component.class).get());
         }
 
-        // TODO: abstract class
-        // TODO: interface
-
         @Test
         public void should_return_empty_if_component_not_defined() {
             Optional<Component> component = config.getContext().get(Component.class);
@@ -87,6 +84,22 @@ public class ContainerTest {
                 assertNotNull(dependency);
 
                 assertEquals("indirect dependency", ((DependencyWithInjectConstructor) dependency).getDependency());
+            }
+
+            abstract class AbstractComponent implements Component {
+                @Inject
+                public AbstractComponent() {
+                }
+            }
+
+            @Test
+            public void should_throw_exception_if_component_is_abstract() {
+                assertThrows(IllegalComponentException.class, () -> new ConstructInjectionProvider<>(AbstractComponent.class));
+            }
+
+            @Test
+            public void should_throw_exception_if_component_is_interface() {
+                assertThrows(IllegalComponentException.class, () -> new ConstructInjectionProvider<>(Component.class));
             }
 
             // multi inject constructors
