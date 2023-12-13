@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.stubbing.answers.ThrowsException;
 
 import java.util.Optional;
 import java.util.Set;
@@ -321,6 +322,17 @@ public class ContainerTest {
             }
 
             // TODO throw exception if type parameter defined
+            static class InjectMethodWithTypeParameter {
+                @Inject
+                <T> void install() {
+
+                }
+            }
+
+            @Test
+            public void should_throw_exception_if_inject_method_has_type_parameter() {
+                assertThrows(IllegalComponentException.class, () -> new ConstructInjectionProvider<>(InjectMethodWithTypeParameter.class));
+            }
         }
     }
 

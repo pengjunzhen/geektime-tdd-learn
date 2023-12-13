@@ -32,6 +32,9 @@ class ConstructInjectionProvider<T> implements ContextConfig.ComponentProvider<T
         if (injectFields.stream().anyMatch(f -> Modifier.isFinal(f.getModifiers()))) {
             throw new IllegalComponentException();
         }
+        if (injectMethods.stream().anyMatch(m -> m.getTypeParameters().length > 0)) {
+            throw new IllegalComponentException();
+        }
     }
 
     @Override
