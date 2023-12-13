@@ -177,7 +177,15 @@ public class ContainerTest {
 
             }
 
-            // TODO throw exception if field is final
+            static class FinalInjectField {
+                @Inject
+                final Dependency dependency = null;
+            }
+
+            @Test
+            public void should_throw_exception_if_inject_field_is_final() {
+                assertThrows(IllegalComponentException.class, () -> new ConstructInjectionProvider<>(FinalInjectField.class));
+            }
 
             @Test
             public void should_inject_dependency_via_field() {
